@@ -43,10 +43,11 @@
 
     /* ── 안내 문구 ── */
     .notice {
-      background: #fff8e1; border-left: 4px solid var(--gold);
+      background: #fff0f0; border-left: 4px solid #e53935;
       border-radius: 8px; padding: 12px 16px;
-      margin-bottom: 20px; color: #7a5c00;
+      margin-bottom: 16px; color: #c0392b;
       font-size: 0.88rem; line-height: 1.6;
+      font-weight: 600;
     }
 
     /* ── 평가자 카드 ── */
@@ -198,11 +199,6 @@
 
 <div class="page">
 
-  <div class="notice">
-    ⚠️ &nbsp;평가하지 않은 항목은 <strong>자동으로 3점</strong>으로 반영됩니다.<br>
-    별을 탭하여 1~5점으로 평가해 주세요.
-  </div>
-
   <!-- 평가자 정보 -->
   <div class="evaluator-card">
     <div class="card-section-title">📝 평가자 정보</div>
@@ -213,8 +209,8 @@
       <span class="field-error" id="errName"></span>
     </div>
     <div class="field-group">
-      <label for="inputTeam">소속팀 <span class="required-mark">*</span></label>
-      <input type="text" id="inputTeam" placeholder="소속팀을 입력하세요"
+      <label for="inputTeam">소속팀/소속현장명 <span class="required-mark">*</span></label>
+      <input type="text" id="inputTeam" placeholder="소속팀 또는 소속현장명을 입력하세요"
              maxlength="30" autocomplete="off" inputmode="text" oninput="updateTopInfo()"/>
       <span class="field-error" id="errTeam"></span>
     </div>
@@ -236,6 +232,11 @@
   <div class="progress-wrap">
     <span class="progress-label" id="progressLabel">0 / 24 항목 평가</span>
     <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <!-- 안내 문구 -->
+  <div class="notice">
+    ⚠️ &nbsp;평가하지 않은 항목은 <strong>자동으로 3점</strong>으로 반영됩니다.
   </div>
 
   <!-- 제품 카드 목록 -->
@@ -463,13 +464,51 @@
   function isLocked() { return document.getElementById('btnSubmit').disabled; }
 
   /* ── 초기 실행 ── */
-  function init() {
+  async function init() {
     buildCards();
-    // 이미 이 기기에서 제출했으면 잠금 복원
     const lockRaw = localStorage.getItem(LOCK_KEY);
-    if (lockRaw) {
-      try { applyLock(JSON.parse(lockRaw)); } catch(e) {}
+    if (!lockRaw) return;
+
+    let lock;
+    try { lock = JSON.parse(lockRaw); } catch(e) { return; }
+
+    // Firebase에서 이 평가자의 제출이 아직 존재하는지 확인
+    showLoading('확인 중...');
+    try {
+      const subs = await apiGet();
+      hideLoading();
+      const stillExists = subs.some(s => s.name === lock.name && s.team === lock.team);
+      if (stillExists) {
+        // 제출 내역 존재 → 잠금 유지
+        applyLock(lock);
+      } else {
+        // 관리자가 초기화함 → 잠금 해제
+        localStorage.removeItem(LOCK_KEY);
+        showResetNotice(lock.name);
+      }
+    } catch(e) {
+      hideLoading();
+      // API 실패 시 안전하게 잠금 유지
+      applyLock(lock);
     }
+  }
+
+  /* ── 초기화 안내 메시지 ── */
+  function showResetNotice(name) {
+    const notice = document.createElement('div');
+    notice.style.cssText = `
+      background:#fff3e0; border-left:4px solid #e67e22;
+      border-radius:8px; padding:12px 16px; margin-bottom:16px;
+      color:#7d4e00; font-size:0.88rem; font-weight:600; line-height:1.6;`;
+    notice.innerHTML = `🔄 &nbsp;<strong>${name}</strong> 님의 제출이 관리자에 의해 초기화되었습니다.<br>다시 평가하신 후 제출해 주세요.`;
+    const page = document.querySelector('.page');
+    page.insertBefore(notice, page.firstChild);
+    // 3초 후 부드럽게 사라짐
+    setTimeout(() => {
+      notice.style.transition = 'opacity 1s';
+      notice.style.opacity = '0';
+      setTimeout(() => notice.remove(), 1000);
+    }, 4000);
   }
 
   init();
