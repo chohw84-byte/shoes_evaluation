@@ -135,6 +135,40 @@
     }
     .btn-del:hover { color:#e53935; background:#fde8e8; }
 
+    /* ── 초기화 카드 ── */
+    .reset-card {
+      background:#fff; border-radius:12px;
+      box-shadow:0 2px 10px rgba(0,0,0,0.07);
+      padding:18px 22px; margin-bottom:22px;
+      border-left: 4px solid #e67e22;
+    }
+    .reset-card h3 { font-size:0.95rem; color:#1a2e4a; margin-bottom:6px; }
+    .reset-card p  { font-size:0.82rem; color:#7a8fa6; margin-bottom:16px; }
+    .reset-list { display:flex; flex-direction:column; gap:8px; }
+    .reset-item {
+      display:flex; align-items:center; justify-content:space-between;
+      background:#fff8f0; border:1px solid #fde0bc;
+      border-radius:8px; padding:10px 14px; gap:12px;
+    }
+    .reset-item-info { font-size:0.9rem; color:#1a2e4a; font-weight:600; }
+    .reset-item-sub  { font-size:0.78rem; color:#7a8fa6; margin-top:2px; }
+    .btn-reset-one {
+      background:#e67e22; color:#fff; border:none;
+      padding:7px 16px; border-radius:6px;
+      font-size:0.82rem; font-weight:700; cursor:pointer;
+      white-space:nowrap; flex-shrink:0;
+      transition:background .15s;
+    }
+    .btn-reset-one:hover { background:#ca6f1e; }
+    .btn-reset-all-eval {
+      background:#fff3e0; color:#e67e22; border:1.5px solid #f0a500;
+      padding:8px 18px; border-radius:7px;
+      font-size:0.88rem; font-weight:700; cursor:pointer;
+      transition:background .15s;
+    }
+    .btn-reset-all-eval:hover { background:#ffe0b2; }
+    .reset-empty { font-size:0.88rem; color:#9eb3c8; text-align:center; padding:18px 0; }
+
     /* ── 로딩 ── */
     .loading-overlay {
       display:none; position:fixed; inset:0; z-index:200;
@@ -204,6 +238,19 @@
   </div>
 
   <div class="stats-row" id="statsRow"></div>
+
+  <!-- 평가자 제출 초기화 카드 -->
+  <div class="reset-card" id="resetCard">
+    <h3>🔄 평가자 제출 초기화</h3>
+    <p>초기화하면 해당 평가자가 평가 페이지를 열었을 때 자동으로 잠금이 해제되어 다시 평가할 수 있습니다.</p>
+    <div style="display:flex; justify-content:flex-end; margin-bottom:12px;">
+      <button class="btn-reset-all-eval" onclick="resetAllEvaluators()">↺ 전체 평가자 초기화</button>
+    </div>
+    <div class="reset-list" id="resetList">
+      <div class="reset-empty">제출된 평가자가 없습니다.</div>
+    </div>
+  </div>
+
   <div class="summary-card" id="summaryCard" style="display:none">
     <h3>📈 항목별 평균 점수</h3>
     <div class="summary-grid" id="summaryGrid"></div>
@@ -306,8 +353,59 @@
   /* ── 대시보드 렌더링 ── */
   function renderDash(subs) {
     renderStats(subs);
+    renderResetList(subs);
     renderSummary(subs);
     renderTable(subs);
+  }
+
+  /* ── 평가자 초기화 목록 렌더링 ── */
+  function renderResetList(subs) {
+    const list = document.getElementById('resetList');
+    if (!subs.length) {
+      list.innerHTML = '<div class="reset-empty">제출된 평가자가 없습니다.</div>';
+      return;
+    }
+    list.innerHTML = subs.map((s, idx) => `
+      <div class="reset-item" id="reset-item-${idx}">
+        <div>
+          <div class="reset-item-info">👤 ${esc(s.name)} &nbsp;·&nbsp; ${esc(s.team)}</div>
+          <div class="reset-item-sub">제출일시: ${esc(s.submittedAt)}</div>
+        </div>
+        <button class="btn-reset-one" onclick="resetOneEvaluator(${idx})">↺ 초기화</button>
+      </div>`).join('');
+  }
+
+  /* ── 개별 평가자 초기화 ── */
+  async function resetOneEvaluator(idx) {
+    const sub = cachedSubs[idx];
+    if (!confirm(`다음 평가자의 제출을 초기화하시겠습니까?\n\n성명: ${sub.name}\n소속팀/현장: ${sub.team}\n\n초기화 후 해당 평가자가 페이지를 열면 다시 평가할 수 있습니다.`)) return;
+    showLoading('초기화 중...');
+    try {
+      const subs = await apiGet();
+      subs.splice(idx, 1);
+      await apiPut(subs);
+      cachedSubs = subs;
+      renderDash(subs);
+      showToast(`✅ ${sub.name} 님의 제출이 초기화되었습니다.`);
+    } catch(e) { alert(`오류: ${e.message}`); }
+    finally { hideLoading(); }
+  }
+
+  /* ── 전체 평가자 초기화 ── */
+  async function resetAllEvaluators() {
+    if (!cachedSubs.length) { alert('초기화할 제출 데이터가 없습니다.'); return; }
+    const pwd = prompt(`전체 ${cachedSubs.length}명의 제출을 초기화합니다.\n관리자 비밀번호를 입력하세요.`);
+    if (pwd === null) return;
+    if (pwd !== ADMIN_PWD) { alert('비밀번호가 올바르지 않습니다.'); return; }
+    if (!confirm(`정말로 전체 ${cachedSubs.length}명의 제출을 초기화할까요?\n모든 평가자가 다시 평가할 수 있게 됩니다.`)) return;
+    showLoading('전체 초기화 중...');
+    try {
+      await apiPut([]);
+      cachedSubs = [];
+      renderDash([]);
+      showToast(`✅ 전체 평가자 제출이 초기화되었습니다.`);
+    } catch(e) { alert(`오류: ${e.message}`); }
+    finally { hideLoading(); }
   }
 
   function renderStats(subs) {
