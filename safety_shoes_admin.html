@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>관리자 | 안전화 평가 집계</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+      background: #f0f4f8;
+      min-height: 100vh;
+    }
+
+    /* ══════════════════════════════
+       로그인 화면
+    ══════════════════════════════ */
+    #loginScreen {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .login-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 28px rgba(0,0,0,0.12);
+      padding: 48px 44px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .login-icon { font-size: 3rem; margin-bottom: 16px; }
+
+    .login-card h2 {
+      font-size: 1.4rem;
+      color: #1a2e4a;
+      margin-bottom: 6px;
+    }
+
+    .login-card p {
+      font-size: 0.88rem;
+      color: #7a8fa6;
+      margin-bottom: 32px;
+    }
+
+    .login-card input[type="password"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid #c5d6f0;
+      border-radius: 8px;
+      font-size: 1rem;
+      color: #1a2e4a;
+      outline: none;
+      transition: border-color 0.18s, box-shadow 0.18s;
+      letter-spacing: 0.2em;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .login-card input[type="password"]:focus {
+      border-color: #1a2e4a;
+      box-shadow: 0 0 0 3px rgba(26,46,74,0.08);
+    }
+
+    .login-card input.invalid { border-color: #e53935; background: #fff5f5; }
+
+    .login-err {
+      font-size: 0.82rem;
+      color: #e53935;
+      min-height: 18px;
+      margin-bottom: 12px;
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 13px;
+      background: #1a2e4a;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.18s;
+    }
+
+    .btn-login:hover { background: #253f67; }
+
+    /* ══════════════════════════════
+       관리자 대시보드
+    ══════════════════════════════ */
+    #adminDash { display: none; padding: 32px 28px; }
+
+    .dash-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .dash-header h1 {
+      font-size: 1.5rem;
+      color: #1a2e4a;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    /* ── 통계 카드 ── */
+    .stats-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .stat-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+      padding: 18px 24px;
+      flex: 1;
+      min-width: 140px;
+      text-align: center;
+    }
+
+    .stat-card .stat-num {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #1a2e4a;
+      line-height: 1.1;
+    }
+
+    .stat-card .stat-label {
+      font-size: 0.82rem;
+      color: #7a8fa6;
+      margin-top: 4px;
+    }
+
+    /* ── 평균 요약 테이블 ── */
+    .summary-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+      padding: 20px 24px;
+      margin-bottom: 24px;
+    }
+
+    .summary-card h3 {
+      font-size: 0.97rem;
+      color: #1a2e4a;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e8edf3;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
+    }
+
+    .summary-item {
+      background: #f4f8ff;
+      border-radius: 8px;
+      padding: 12px 14px;
+      text-align: center;
+    }
+
+    .summary-item .si-label { font-size: 0.8rem; color: #5a7a9a; margin-bottom: 4px; }
+    .summary-item .si-val   { font-size: 1.4rem; font-weight: 800; color: #1a2e4a; }
+
+    /* ── 데이터 테이블 ── */
+    .table-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+      padding: 20px 24px;
+      overflow-x: auto;
+    }
+
+    .table-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #e8edf3;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .table-card-header h3 { font-size: 0.97rem; color: #1a2e4a; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.87rem;
+      min-width: 900px;
+    }
+
+    /* 헤더 2단 */
+    thead tr:first-child { background: #1a2e4a; color: #fff; }
+    thead tr:last-child  { background: #253f67; color: #c5d6f0; }
+
+    thead th {
+      padding: 10px 8px;
+      text-align: center;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    thead tr:first-child th:first-child { border-radius: 8px 0 0 0; }
+    thead tr:first-child th:last-child  { border-radius: 0 8px 0 0; }
+
+    thead tr:last-child th { font-size: 0.78rem; font-weight: 500; padding: 6px 8px; }
+
+    tbody tr { border-bottom: 1px solid #e8edf3; transition: background 0.12s; }
+    tbody tr:hover { background: #f4f8ff; }
+    tbody tr:last-child { border-bottom: none; }
+
+    tbody td {
+      padding: 10px 8px;
+      text-align: center;
+      vertical-align: middle;
+      color: #2c3e50;
+    }
+
+    tbody td.td-name { text-align: left; font-weight: 700; color: #1a2e4a; padding-left: 14px; }
+    tbody td.td-team { text-align: left; color: #546e7a; padding-left: 14px; }
+    tbody td.td-date { font-size: 0.82rem; color: #7a8fa6; white-space: nowrap; }
+
+    /* 점수 셀 색상 */
+    .s1 { color: #c0392b; font-weight: 700; }
+    .s2 { color: #d35400; font-weight: 700; }
+    .s3 { color: #2471a3; }
+    .s4 { color: #1e8449; font-weight: 700; }
+    .s5 { color: #9a6700; font-weight: 800; }
+
+    .td-total { font-weight: 800; color: #1a2e4a; font-size: 0.97rem; }
+    .td-del   { width: 50px; }
+
+    /* 빈 상태 */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #9eb3c8;
+    }
+
+    .empty-state .empty-icon { font-size: 3rem; margin-bottom: 12px; }
+    .empty-state p { font-size: 0.95rem; }
+
+    /* ── 버튼 공통 ── */
+    button {
+      padding: 9px 20px;
+      border-radius: 7px;
+      border: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.18s, box-shadow 0.18s;
+      white-space: nowrap;
+    }
+
+    .btn-excel {
+      background: #1b7a3e;
+      color: #fff;
+    }
+    .btn-excel:hover { background: #156031; box-shadow: 0 2px 8px rgba(27,122,62,0.2); }
+
+    .btn-logout { background: #e8edf3; color: #444; }
+    .btn-logout:hover { background: #d0d7e2; }
+
+    .btn-clear { background: #fde8e8; color: #c0392b; }
+    .btn-clear:hover { background: #fbd0d0; }
+
+    .btn-del {
+      background: none;
+      border: none;
+      color: #bbb;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .btn-del:hover { color: #e53935; background: #fde8e8; }
+
+    @media print {
+      #loginScreen { display: none !important; }
+      .header-btns, .btn-del, .btn-clear { display: none !important; }
+      body { background: #fff; }
+      .stat-card, .summary-card, .table-card { box-shadow: none; border: 1px solid #ddd; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     로그인 화면
+══════════════════════════════════════ -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-icon">🔐</div>
+    <h2>관리자 로그인</h2>
+    <p>안전화 평가 집계 관리자 페이지입니다.</p>
+    <input type="password" id="pwdInput" placeholder="관리자 비밀번호"
+           onkeydown="if(event.key==='Enter') doLogin()"/>
+    <div class="login-err" id="loginErr"></div>
+    <button class="btn-login" onclick="doLogin()">로그인</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     관리자 대시보드
+══════════════════════════════════════ -->
+<div id="adminDash">
+
+  <!-- 헤더 -->
+  <div class="dash-header">
+    <h1>📊 안전화 평가 집계 현황</h1>
+    <div class="header-btns">
+      <button class="btn-excel"  onclick="downloadCSV()">⬇️ 엑셀 다운로드</button>
+      <button class="btn-clear"  onclick="clearAll()">🗑️ 전체 삭제</button>
+      <button class="btn-logout" onclick="doLogout()">로그아웃</button>
+    </div>
+  </div>
+
+  <!-- 통계 카드 -->
+  <div class="stats-row" id="statsRow"></div>
+
+  <!-- 항목별 평균 요약 -->
+  <div class="summary-card" id="summaryCard" style="display:none">
+    <h3>📈 항목별 평균 점수</h3>
+    <div class="summary-grid" id="summaryGrid"></div>
+  </div>
+
+  <!-- 데이터 테이블 -->
+  <div class="table-card">
+    <div class="table-card-header">
+      <h3>📋 제출된 평가 목록</h3>
+      <span id="countBadge" style="font-size:0.85rem; color:#7a8fa6;"></span>
+    </div>
+    <div id="tableWrap"></div>
+  </div>
+
+</div>
+
+<script>
+  /* ══════════════
+     설정
+  ══════════════ */
+  const ADMIN_PWD = 'admin1234';   // ← 비밀번호 변경 시 여기 수정
+  const STORE_KEY = 'safety_eval_submissions';
+  const PRODUCTS  = ['1번 제품','2번 제품','3번 제품','4번 제품','5번 제품','6번 제품'];
+  const CRITERIA  = ['품질','착용감','내구성','디자인'];
+
+  /* ══════════════
+     로그인
+  ══════════════ */
+  function doLogin() {
+    const pwd = document.getElementById('pwdInput').value;
+    if (pwd === ADMIN_PWD) {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminDash').style.display   = 'block';
+      renderDash();
+    } else {
+      document.getElementById('loginErr').textContent = '비밀번호가 올바르지 않습니다.';
+      document.getElementById('pwdInput').classList.add('invalid');
+      document.getElementById('pwdInput').value = '';
+      document.getElementById('pwdInput').focus();
+    }
+  }
+
+  function doLogout() {
+    document.getElementById('adminDash').style.display   = 'none';
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('pwdInput').value = '';
+    document.getElementById('loginErr').textContent = '';
+    document.getElementById('pwdInput').classList.remove('invalid');
+  }
+
+  /* ══════════════
+     데이터 로드
+  ══════════════ */
+  function getSubmissions() {
+    try { return JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); } catch(e) { return []; }
+  }
+
+  /* ══════════════
+     대시보드 렌더링
+  ══════════════ */
+  function renderDash() {
+    const subs = getSubmissions();
+    renderStats(subs);
+    renderSummary(subs);
+    renderTable(subs);
+  }
+
+  /* 통계 카드 */
+  function renderStats(subs) {
+    const total = subs.length;
+    // 전체 평균 (모든 점수 평균)
+    let allScores = [];
+    subs.forEach(s => s.scores.forEach(row => row.forEach(v => allScores.push(v))));
+    const globalAvg = allScores.length ? (allScores.reduce((a,b)=>a+b,0)/allScores.length).toFixed(2) : '-';
+
+    // 최고 총점 평가자
+    let topSub = null, topScore = -1;
+    subs.forEach(s => {
+      const ts = s.scores.flat().reduce((a,b)=>a+b,0);
+      if (ts > topScore) { topScore = ts; topSub = s; }
+    });
+
+    document.getElementById('statsRow').innerHTML = `
+      <div class="stat-card">
+        <div class="stat-num">${total}</div>
+        <div class="stat-label">총 제출 수</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">${globalAvg}</div>
+        <div class="stat-label">전체 평균 점수</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">${total > 0 ? topScore : '-'}</div>
+        <div class="stat-label">최고 총점 (${topSub ? topSub.name : '-'})</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">${total > 0 ? (6*4*5) : '-'}</div>
+        <div class="stat-label">항목당 만점 기준 (${6}제품×${4}항목×5점)</div>
+      </div>`;
+  }
+
+  /* 항목별 평균 */
+  function renderSummary(subs) {
+    const card = document.getElementById('summaryCard');
+    if (!subs.length) { card.style.display = 'none'; return; }
+    card.style.display = 'block';
+
+    const grid = document.getElementById('summaryGrid');
+    let html = '';
+
+    // 제품별 평균
+    PRODUCTS.forEach((prod, pi) => {
+      let total = 0, cnt = 0;
+      subs.forEach(s => s.scores[pi].forEach(v => { total += v; cnt++; }));
+      const avg = cnt ? (total/cnt).toFixed(2) : '-';
+      html += `<div class="summary-item"><div class="si-label">${prod}</div><div class="si-val">${avg}</div></div>`;
+    });
+
+    // 기준별 평균
+    CRITERIA.forEach((crit, ci) => {
+      let total = 0, cnt = 0;
+      subs.forEach(s => { total += s.scores.reduce((a,row)=>a+row[ci],0); cnt += 6; });
+      const avg = cnt ? (total/cnt).toFixed(2) : '-';
+      const icons = ['⭐','🦶','🔩','🎨'];
+      html += `<div class="summary-item"><div class="si-label">${icons[ci]} ${crit} 평균</div><div class="si-val">${avg}</div></div>`;
+    });
+
+    grid.innerHTML = html;
+  }
+
+  /* 데이터 테이블 */
+  function renderTable(subs) {
+    const wrap = document.getElementById('tableWrap');
+    document.getElementById('countBadge').textContent = `총 ${subs.length}건`;
+
+    if (!subs.length) {
+      wrap.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">📭</div>
+          <p>아직 제출된 평가가 없습니다.</p>
+        </div>`;
+      return;
+    }
+
+    // 헤더 생성
+    // 1행: 기본정보 + 제품별(colspan4) + 총합
+    // 2행: 성명/소속/제출일 + 품질/착용/내구/디자 반복 + -
+    let th1 = `<th rowspan="2" style="text-align:left; padding-left:14px;">성명</th>
+               <th rowspan="2" style="text-align:left; padding-left:14px;">소속팀</th>
+               <th rowspan="2">제출일시</th>`;
+    let th2 = '';
+
+    PRODUCTS.forEach(prod => {
+      th1 += `<th colspan="4">${prod}</th>`;
+      CRITERIA.forEach(c => { th2 += `<th>${c}</th>`; });
+    });
+
+    th1 += `<th rowspan="2">총합</th><th rowspan="2"></th>`;
+
+    const thead = `<thead><tr>${th1}</tr><tr>${th2}</tr></thead>`;
+
+    // 데이터 행
+    let rows = '';
+    subs.forEach((s, idx) => {
+      const flatScores = s.scores.flat();
+      const total = flatScores.reduce((a,b)=>a+b,0);
+      const cells = flatScores.map(v => `<td class="s${v}">${v}</td>`).join('');
+      rows += `
+        <tr>
+          <td class="td-name">${escHtml(s.name)}</td>
+          <td class="td-team">${escHtml(s.team)}</td>
+          <td class="td-date">${escHtml(s.submittedAt)}</td>
+          ${cells}
+          <td class="td-total">${total}</td>
+          <td class="td-del"><button class="btn-del" onclick="deleteRow(${idx})" title="삭제">✕</button></td>
+        </tr>`;
+    });
+
+    // 평균 행
+    let avgCells = '';
+    PRODUCTS.forEach((_, pi) => {
+      CRITERIA.forEach((_, ci) => {
+        const avg = subs.reduce((a,s)=>a+s.scores[pi][ci],0)/subs.length;
+        avgCells += `<td style="font-size:0.8rem; color:#5a7a9a;">${avg.toFixed(1)}</td>`;
+      });
+    });
+    const grandAvg = subs.reduce((a,s)=>a+s.scores.flat().reduce((x,y)=>x+y,0),0)/subs.length;
+    rows += `
+      <tr style="background:#f4f8ff; font-style:italic;">
+        <td class="td-name" style="font-style:italic; color:#5a7a9a;">평균</td>
+        <td></td><td></td>
+        ${avgCells}
+        <td class="td-total" style="color:#5a7a9a;">${grandAvg.toFixed(1)}</td>
+        <td></td>
+      </tr>`;
+
+    wrap.innerHTML = `<table>${thead}<tbody>${rows}</tbody></table>`;
+  }
+
+  /* ══════════════
+     삭제
+  ══════════════ */
+  function deleteRow(idx) {
+    const subs = getSubmissions();
+    const sub = subs[idx];
+    if (!confirm(`다음 평가를 삭제하시겠습니까?\n\n성명: ${sub.name}\n소속팀: ${sub.team}\n제출일시: ${sub.submittedAt}`)) return;
+    subs.splice(idx, 1);
+    localStorage.setItem(STORE_KEY, JSON.stringify(subs));
+    renderDash();
+  }
+
+  function clearAll() {
+    const subs = getSubmissions();
+    if (!subs.length) { alert('삭제할 데이터가 없습니다.'); return; }
+    const pwd = prompt(`전체 ${subs.length}건을 삭제합니다.\n확인을 위해 관리자 비밀번호를 입력하세요.`);
+    if (pwd === null) return;
+    if (pwd !== ADMIN_PWD) { alert('비밀번호가 올바르지 않습니다.'); return; }
+    if (!confirm(`정말로 모든 평가 데이터(${subs.length}건)를 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.`)) return;
+    localStorage.removeItem(STORE_KEY);
+    localStorage.removeItem('safety_eval_lock');
+    renderDash();
+  }
+
+  /* ══════════════
+     CSV 다운로드 (엑셀 호환)
+  ══════════════ */
+  function downloadCSV() {
+    const subs = getSubmissions();
+    if (!subs.length) { alert('다운로드할 데이터가 없습니다.'); return; }
+
+    // 헤더 행 1
+    const header1 = ['성명','소속팀','제출일시'];
+    PRODUCTS.forEach(p => CRITERIA.forEach(c => header1.push(`${p}_${c}`)));
+    header1.push('총합');
+
+    // 데이터 행
+    const rows = subs.map(s => {
+      const row = [s.name, s.team, s.submittedAt];
+      s.scores.forEach(r => r.forEach(v => row.push(v)));
+      row.push(s.scores.flat().reduce((a,b)=>a+b,0));
+      return row;
+    });
+
+    // 평균 행
+    const avgRow = ['평균', '', ''];
+    PRODUCTS.forEach((_, pi) => {
+      CRITERIA.forEach((_, ci) => {
+        avgRow.push((subs.reduce((a,s)=>a+s.scores[pi][ci],0)/subs.length).toFixed(2));
+      });
+    });
+    avgRow.push((subs.reduce((a,s)=>a+s.scores.flat().reduce((x,y)=>x+y,0),0)/subs.length).toFixed(2));
+
+    const allRows = [header1, ...rows, avgRow];
+    const csvContent = allRows.map(r => r.map(cell => `"${String(cell).replace(/"/g,'""')}"`).join(',')).join('\n');
+
+    // UTF-8 BOM 추가 (한글 깨짐 방지)
+    const bom = '﻿';
+    const blob = new Blob([bom + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url  = URL.createObjectURL(blob);
+    const now  = new Date();
+    const ts   = `${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}_${pad(now.getHours())}${pad(now.getMinutes())}`;
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = `안전화평가집계_${ts}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function pad(n) { return String(n).padStart(2,'0'); }
+  function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+</script>
+</body>
+</html>
