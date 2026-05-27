@@ -8,306 +8,177 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
-      background: #f0f4f8;
-      min-height: 100vh;
+      font-family: 'Segoe UI', 'Malgun Gothic', Apple SD Gothic Neo, sans-serif;
+      background: #f0f4f8; min-height: 100vh; color: #1a2e4a;
     }
 
-    /* ══════════════════════════════
-       로그인 화면
-    ══════════════════════════════ */
+    /* ── 로그인 ── */
     #loginScreen {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
+      display: flex; justify-content: center; align-items: center;
+      min-height: 100vh; padding: 20px;
     }
-
     .login-card {
-      background: #fff;
-      border-radius: 16px;
+      background: #fff; border-radius: 16px;
       box-shadow: 0 4px 28px rgba(0,0,0,0.12);
-      padding: 48px 44px;
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
+      padding: 48px 44px; width: 100%; max-width: 400px; text-align: center;
     }
-
     .login-icon { font-size: 3rem; margin-bottom: 16px; }
-
-    .login-card h2 {
-      font-size: 1.4rem;
-      color: #1a2e4a;
-      margin-bottom: 6px;
-    }
-
-    .login-card p {
-      font-size: 0.88rem;
-      color: #7a8fa6;
-      margin-bottom: 32px;
-    }
-
+    .login-card h2 { font-size: 1.4rem; color: #1a2e4a; margin-bottom: 6px; }
+    .login-card p  { font-size: 0.88rem; color: #7a8fa6; margin-bottom: 32px; }
     .login-card input[type="password"] {
-      width: 100%;
-      padding: 12px 16px;
-      border: 1.5px solid #c5d6f0;
-      border-radius: 8px;
-      font-size: 1rem;
-      color: #1a2e4a;
-      outline: none;
-      transition: border-color 0.18s, box-shadow 0.18s;
-      letter-spacing: 0.2em;
-      text-align: center;
-      margin-bottom: 14px;
+      width: 100%; padding: 12px 16px;
+      border: 1.5px solid #c5d6f0; border-radius: 8px;
+      font-size: 1rem; color: #1a2e4a; outline: none;
+      letter-spacing: 0.2em; text-align: center;
+      margin-bottom: 10px;
+      transition: border-color .18s, box-shadow .18s;
     }
-
-    .login-card input[type="password"]:focus {
-      border-color: #1a2e4a;
-      box-shadow: 0 0 0 3px rgba(26,46,74,0.08);
-    }
-
-    .login-card input.invalid { border-color: #e53935; background: #fff5f5; }
-
-    .login-err {
-      font-size: 0.82rem;
-      color: #e53935;
-      min-height: 18px;
-      margin-bottom: 12px;
-    }
-
+    .login-card input:focus { border-color:#1a2e4a; box-shadow:0 0 0 3px rgba(26,46,74,0.08); }
+    .login-card input.invalid { border-color:#e53935; background:#fff5f5; }
+    .login-err { font-size:0.82rem; color:#e53935; min-height:18px; margin-bottom:12px; }
     .btn-login {
-      width: 100%;
-      padding: 13px;
-      background: #1a2e4a;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.18s;
+      width:100%; padding:13px; background:#1a2e4a; color:#fff;
+      border:none; border-radius:8px; font-size:1rem; font-weight:700;
+      cursor:pointer; transition:background .18s;
     }
+    .btn-login:hover { background:#253f67; }
 
-    .btn-login:hover { background: #253f67; }
-
-    /* ══════════════════════════════
-       관리자 대시보드
-    ══════════════════════════════ */
-    #adminDash { display: none; padding: 32px 28px; }
+    /* ── 대시보드 ── */
+    #adminDash { display:none; padding:28px 20px; max-width:1100px; margin:0 auto; }
 
     .dash-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-bottom: 28px;
+      display:flex; align-items:center; justify-content:space-between;
+      flex-wrap:wrap; gap:14px; margin-bottom:24px;
     }
-
-    .dash-header h1 {
-      font-size: 1.5rem;
-      color: #1a2e4a;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .header-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+    .dash-header h1 { font-size:1.4rem; color:#1a2e4a; display:flex; align-items:center; gap:10px; }
+    .header-btns { display:flex; gap:10px; flex-wrap:wrap; }
 
     /* ── 통계 카드 ── */
-    .stats-row {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-bottom: 28px;
-    }
-
+    .stats-row { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:22px; }
     .stat-card {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
-      padding: 18px 24px;
-      flex: 1;
-      min-width: 140px;
-      text-align: center;
+      background:#fff; border-radius:12px;
+      box-shadow:0 2px 10px rgba(0,0,0,0.07);
+      padding:16px 20px; flex:1; min-width:130px; text-align:center;
     }
+    .stat-num   { font-size:2rem; font-weight:800; color:#1a2e4a; line-height:1.1; }
+    .stat-label { font-size:0.8rem; color:#7a8fa6; margin-top:4px; }
 
-    .stat-card .stat-num {
-      font-size: 2rem;
-      font-weight: 800;
-      color: #1a2e4a;
-      line-height: 1.1;
-    }
-
-    .stat-card .stat-label {
-      font-size: 0.82rem;
-      color: #7a8fa6;
-      margin-top: 4px;
-    }
-
-    /* ── 평균 요약 테이블 ── */
+    /* ── 평균 요약 ── */
     .summary-card {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
-      padding: 20px 24px;
-      margin-bottom: 24px;
+      background:#fff; border-radius:12px;
+      box-shadow:0 2px 10px rgba(0,0,0,0.07);
+      padding:18px 22px; margin-bottom:22px;
     }
-
-    .summary-card h3 {
-      font-size: 0.97rem;
-      color: #1a2e4a;
-      margin-bottom: 16px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #e8edf3;
-    }
-
-    .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 12px;
-    }
-
-    .summary-item {
-      background: #f4f8ff;
-      border-radius: 8px;
-      padding: 12px 14px;
-      text-align: center;
-    }
-
-    .summary-item .si-label { font-size: 0.8rem; color: #5a7a9a; margin-bottom: 4px; }
-    .summary-item .si-val   { font-size: 1.4rem; font-weight: 800; color: #1a2e4a; }
+    .summary-card h3 { font-size:0.95rem; color:#1a2e4a; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid #e8edf3; }
+    .summary-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; }
+    .summary-item { background:#f4f8ff; border-radius:8px; padding:12px; text-align:center; }
+    .si-label { font-size:0.78rem; color:#5a7a9a; margin-bottom:4px; }
+    .si-val   { font-size:1.35rem; font-weight:800; color:#1a2e4a; }
 
     /* ── 데이터 테이블 ── */
     .table-card {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
-      padding: 20px 24px;
-      overflow-x: auto;
+      background:#fff; border-radius:12px;
+      box-shadow:0 2px 10px rgba(0,0,0,0.07);
+      padding:18px 22px; overflow-x:auto;
     }
-
     .table-card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid #e8edf3;
-      flex-wrap: wrap;
-      gap: 10px;
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid #e8edf3;
+      flex-wrap:wrap; gap:10px;
     }
+    .table-card-header h3 { font-size:0.95rem; color:#1a2e4a; }
 
-    .table-card-header h3 { font-size: 0.97rem; color: #1a2e4a; }
+    table { width:100%; border-collapse:collapse; font-size:0.86rem; min-width:900px; }
+    thead tr:first-child { background:#1a2e4a; color:#fff; }
+    thead tr:last-child  { background:#253f67; color:#c5d6f0; }
+    thead th { padding:10px 8px; text-align:center; font-weight:600; white-space:nowrap; }
+    thead tr:first-child th:first-child { border-radius:8px 0 0 0; }
+    thead tr:first-child th:last-child  { border-radius:0 8px 0 0; }
+    thead tr:last-child th { font-size:0.76rem; font-weight:500; padding:6px 8px; }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.87rem;
-      min-width: 900px;
-    }
+    tbody tr { border-bottom:1px solid #e8edf3; transition:background .12s; }
+    tbody tr:hover { background:#f4f8ff; }
+    tbody tr:last-child { border-bottom:none; }
+    tbody td { padding:10px 8px; text-align:center; vertical-align:middle; }
+    .td-name { text-align:left!important; font-weight:700; padding-left:14px!important; }
+    .td-team { text-align:left!important; color:#546e7a; padding-left:14px!important; }
+    .td-date { font-size:0.8rem; color:#7a8fa6; white-space:nowrap; }
 
-    /* 헤더 2단 */
-    thead tr:first-child { background: #1a2e4a; color: #fff; }
-    thead tr:last-child  { background: #253f67; color: #c5d6f0; }
+    .s1 { color:#c0392b; font-weight:700; }
+    .s2 { color:#d35400; font-weight:700; }
+    .s3 { color:#2471a3; }
+    .s4 { color:#1e8449; font-weight:700; }
+    .s5 { color:#9a6700; font-weight:800; }
+    .td-total { font-weight:800; }
 
-    thead th {
-      padding: 10px 8px;
-      text-align: center;
-      font-weight: 600;
-      white-space: nowrap;
-    }
+    .empty-state { text-align:center; padding:60px 20px; color:#9eb3c8; }
+    .empty-state .empty-icon { font-size:3rem; margin-bottom:12px; }
 
-    thead tr:first-child th:first-child { border-radius: 8px 0 0 0; }
-    thead tr:first-child th:last-child  { border-radius: 0 8px 0 0; }
-
-    thead tr:last-child th { font-size: 0.78rem; font-weight: 500; padding: 6px 8px; }
-
-    tbody tr { border-bottom: 1px solid #e8edf3; transition: background 0.12s; }
-    tbody tr:hover { background: #f4f8ff; }
-    tbody tr:last-child { border-bottom: none; }
-
-    tbody td {
-      padding: 10px 8px;
-      text-align: center;
-      vertical-align: middle;
-      color: #2c3e50;
-    }
-
-    tbody td.td-name { text-align: left; font-weight: 700; color: #1a2e4a; padding-left: 14px; }
-    tbody td.td-team { text-align: left; color: #546e7a; padding-left: 14px; }
-    tbody td.td-date { font-size: 0.82rem; color: #7a8fa6; white-space: nowrap; }
-
-    /* 점수 셀 색상 */
-    .s1 { color: #c0392b; font-weight: 700; }
-    .s2 { color: #d35400; font-weight: 700; }
-    .s3 { color: #2471a3; }
-    .s4 { color: #1e8449; font-weight: 700; }
-    .s5 { color: #9a6700; font-weight: 800; }
-
-    .td-total { font-weight: 800; color: #1a2e4a; font-size: 0.97rem; }
-    .td-del   { width: 50px; }
-
-    /* 빈 상태 */
-    .empty-state {
-      text-align: center;
-      padding: 60px 20px;
-      color: #9eb3c8;
-    }
-
-    .empty-state .empty-icon { font-size: 3rem; margin-bottom: 12px; }
-    .empty-state p { font-size: 0.95rem; }
-
-    /* ── 버튼 공통 ── */
+    /* ── 버튼 ── */
     button {
-      padding: 9px 20px;
-      border-radius: 7px;
-      border: none;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.18s, box-shadow 0.18s;
-      white-space: nowrap;
+      padding:9px 18px; border-radius:7px; border:none;
+      font-size:0.88rem; font-weight:600; cursor:pointer;
+      transition:background .18s; white-space:nowrap;
     }
-
-    .btn-excel {
-      background: #1b7a3e;
-      color: #fff;
-    }
-    .btn-excel:hover { background: #156031; box-shadow: 0 2px 8px rgba(27,122,62,0.2); }
-
-    .btn-logout { background: #e8edf3; color: #444; }
-    .btn-logout:hover { background: #d0d7e2; }
-
-    .btn-clear { background: #fde8e8; color: #c0392b; }
-    .btn-clear:hover { background: #fbd0d0; }
-
+    .btn-excel  { background:#1b7a3e; color:#fff; }
+    .btn-excel:hover  { background:#156031; }
+    .btn-refresh{ background:#2471a3; color:#fff; }
+    .btn-refresh:hover { background:#1a5e8a; }
+    .btn-logout { background:#e8edf3; color:#444; }
+    .btn-logout:hover { background:#d0d7e2; }
+    .btn-clear  { background:#fde8e8; color:#c0392b; }
+    .btn-clear:hover  { background:#fbd0d0; }
     .btn-del {
-      background: none;
-      border: none;
-      color: #bbb;
-      font-size: 1rem;
-      cursor: pointer;
-      padding: 4px 8px;
-      border-radius: 4px;
-      transition: color 0.15s, background 0.15s;
+      background:none; border:none; color:#bbb;
+      font-size:1rem; cursor:pointer; padding:4px 8px;
+      border-radius:4px; transition:color .15s,background .15s;
     }
-    .btn-del:hover { color: #e53935; background: #fde8e8; }
+    .btn-del:hover { color:#e53935; background:#fde8e8; }
+
+    /* ── 로딩 ── */
+    .loading-overlay {
+      display:none; position:fixed; inset:0; z-index:200;
+      background:rgba(255,255,255,0.8);
+      align-items:center; justify-content:center; flex-direction:column; gap:14px;
+    }
+    .loading-overlay.show { display:flex; }
+    .spinner {
+      width:44px; height:44px; border:4px solid #dde6f0;
+      border-top-color:#1a2e4a; border-radius:50%;
+      animation:spin .8s linear infinite;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .loading-text { font-size:0.9rem; color:#1a2e4a; font-weight:600; }
+
+    /* ── 알림 토스트 ── */
+    .toast {
+      position:fixed; bottom:30px; left:50%; transform:translateX(-50%);
+      background:#1a2e4a; color:#fff; padding:12px 24px;
+      border-radius:8px; font-size:0.9rem; font-weight:600;
+      opacity:0; transition:opacity .3s; pointer-events:none; z-index:300;
+      white-space:nowrap;
+    }
+    .toast.show { opacity:1; }
 
     @media print {
-      #loginScreen { display: none !important; }
-      .header-btns, .btn-del, .btn-clear { display: none !important; }
-      body { background: #fff; }
-      .stat-card, .summary-card, .table-card { box-shadow: none; border: 1px solid #ddd; }
+      #loginScreen { display:none!important; }
+      .header-btns,.btn-del,.btn-clear { display:none!important; }
+      body { background:#fff; }
     }
   </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════
-     로그인 화면
-══════════════════════════════════════ -->
+<!-- 로딩 오버레이 -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-text" id="loadingText">불러오는 중...</div>
+</div>
+
+<!-- 토스트 -->
+<div class="toast" id="toast"></div>
+
+<!-- 로그인 -->
 <div id="loginScreen">
   <div class="login-card">
     <div class="login-icon">🔐</div>
@@ -320,59 +191,89 @@
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     관리자 대시보드
-══════════════════════════════════════ -->
+<!-- 대시보드 -->
 <div id="adminDash">
-
-  <!-- 헤더 -->
   <div class="dash-header">
     <h1>📊 안전화 평가 집계 현황</h1>
     <div class="header-btns">
-      <button class="btn-excel"  onclick="downloadCSV()">⬇️ 엑셀 다운로드</button>
-      <button class="btn-clear"  onclick="clearAll()">🗑️ 전체 삭제</button>
-      <button class="btn-logout" onclick="doLogout()">로그아웃</button>
+      <button class="btn-refresh" onclick="refreshData()">🔄 새로고침</button>
+      <button class="btn-excel"   onclick="downloadCSV()">⬇️ 엑셀 다운로드</button>
+      <button class="btn-clear"   onclick="clearAll()">🗑️ 전체 삭제</button>
+      <button class="btn-logout"  onclick="doLogout()">로그아웃</button>
     </div>
   </div>
 
-  <!-- 통계 카드 -->
   <div class="stats-row" id="statsRow"></div>
-
-  <!-- 항목별 평균 요약 -->
   <div class="summary-card" id="summaryCard" style="display:none">
     <h3>📈 항목별 평균 점수</h3>
     <div class="summary-grid" id="summaryGrid"></div>
   </div>
-
-  <!-- 데이터 테이블 -->
   <div class="table-card">
     <div class="table-card-header">
       <h3>📋 제출된 평가 목록</h3>
-      <span id="countBadge" style="font-size:0.85rem; color:#7a8fa6;"></span>
+      <span id="countBadge" style="font-size:0.85rem;color:#7a8fa6;"></span>
     </div>
     <div id="tableWrap"></div>
   </div>
-
 </div>
 
 <script>
-  /* ══════════════
-     설정
-  ══════════════ */
+  /* ════════════════════════════════
+     ⚙️  여기에 JSONBin 정보를 입력하세요
+         (evaluation 파일과 동일하게)
+  ════════════════════════════════ */
+  const JSONBIN_ID  = '6a167fadf47d5c455c3bbfbd';      // JSONBin Bin ID
+  const JSONBIN_KEY = '$2a$10$ChZLbbECmdzPwOqVrVIbvOXomxW41ZdkL4G/2NCqvHzrSUx11qmn6';  // JSONBin Master Key
+  const API_BASE    = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
+  /* ════════════════════════════════ */
+
   const ADMIN_PWD = 'admin1234';   // ← 비밀번호 변경 시 여기 수정
-  const STORE_KEY = 'safety_eval_submissions';
   const PRODUCTS  = ['1번 제품','2번 제품','3번 제품','4번 제품','5번 제품','6번 제품'];
   const CRITERIA  = ['품질','착용감','내구성','디자인'];
 
-  /* ══════════════
-     로그인
-  ══════════════ */
+  let cachedSubs = [];  // 현재 로드된 데이터 캐시
+
+  /* ── 로딩 ── */
+  function showLoading(msg='불러오는 중...') {
+    document.getElementById('loadingText').textContent = msg;
+    document.getElementById('loadingOverlay').classList.add('show');
+  }
+  function hideLoading() { document.getElementById('loadingOverlay').classList.remove('show'); }
+
+  /* ── 토스트 ── */
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  /* ── JSONBin API ── */
+  async function apiGet() {
+    const res = await fetch(`${API_BASE}/latest`, {
+      headers: { 'X-Master-Key': JSONBIN_KEY }
+    });
+    if (!res.ok) throw new Error('데이터를 불러오지 못했습니다. (Key/ID 확인)');
+    const json = await res.json();
+    return json.record?.submissions || [];
+  }
+
+  async function apiPut(data) {
+    const res = await fetch(API_BASE, {
+      method: 'PUT',
+      headers: { 'Content-Type':'application/json', 'X-Master-Key': JSONBIN_KEY },
+      body: JSON.stringify({ submissions: data })
+    });
+    if (!res.ok) throw new Error('저장에 실패했습니다.');
+  }
+
+  /* ── 로그인 ── */
   function doLogin() {
     const pwd = document.getElementById('pwdInput').value;
     if (pwd === ADMIN_PWD) {
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('adminDash').style.display   = 'block';
-      renderDash();
+      refreshData();
     } else {
       document.getElementById('loginErr').textContent = '비밀번호가 올바르지 않습니다.';
       document.getElementById('pwdInput').classList.add('invalid');
@@ -389,226 +290,198 @@
     document.getElementById('pwdInput').classList.remove('invalid');
   }
 
-  /* ══════════════
-     데이터 로드
-  ══════════════ */
-  function getSubmissions() {
-    try { return JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); } catch(e) { return []; }
+  /* ── 데이터 새로고침 ── */
+  async function refreshData() {
+    showLoading('데이터 불러오는 중...');
+    try {
+      cachedSubs = await apiGet();
+      renderDash(cachedSubs);
+      showToast(`✅ ${cachedSubs.length}건 로드 완료`);
+    } catch(e) {
+      alert(`오류: ${e.message}\n\nJSONBin ID와 Key를 확인해 주세요.`);
+    } finally {
+      hideLoading();
+    }
   }
 
-  /* ══════════════
-     대시보드 렌더링
-  ══════════════ */
-  function renderDash() {
-    const subs = getSubmissions();
+  /* ── 대시보드 렌더링 ── */
+  function renderDash(subs) {
     renderStats(subs);
     renderSummary(subs);
     renderTable(subs);
   }
 
-  /* 통계 카드 */
   function renderStats(subs) {
-    const total = subs.length;
-    // 전체 평균 (모든 점수 평균)
-    let allScores = [];
-    subs.forEach(s => s.scores.forEach(row => row.forEach(v => allScores.push(v))));
-    const globalAvg = allScores.length ? (allScores.reduce((a,b)=>a+b,0)/allScores.length).toFixed(2) : '-';
-
-    // 최고 총점 평가자
+    const total  = subs.length;
+    const scores = subs.flatMap(s => s.scores.flat());
+    const avg    = scores.length ? (scores.reduce((a,b)=>a+b,0)/scores.length).toFixed(2) : '-';
     let topSub = null, topScore = -1;
     subs.forEach(s => {
       const ts = s.scores.flat().reduce((a,b)=>a+b,0);
       if (ts > topScore) { topScore = ts; topSub = s; }
     });
-
     document.getElementById('statsRow').innerHTML = `
       <div class="stat-card">
         <div class="stat-num">${total}</div>
         <div class="stat-label">총 제출 수</div>
       </div>
       <div class="stat-card">
-        <div class="stat-num">${globalAvg}</div>
+        <div class="stat-num">${avg}</div>
         <div class="stat-label">전체 평균 점수</div>
       </div>
       <div class="stat-card">
-        <div class="stat-num">${total > 0 ? topScore : '-'}</div>
-        <div class="stat-label">최고 총점 (${topSub ? topSub.name : '-'})</div>
+        <div class="stat-num">${total>0?topScore:'-'}</div>
+        <div class="stat-label">최고 총점${topSub?` (${topSub.name})`:''}</div>
       </div>
       <div class="stat-card">
-        <div class="stat-num">${total > 0 ? (6*4*5) : '-'}</div>
-        <div class="stat-label">항목당 만점 기준 (${6}제품×${4}항목×5점)</div>
+        <div class="stat-num">${6*4*5}</div>
+        <div class="stat-label">만점 기준 (6×4×5)</div>
       </div>`;
   }
 
-  /* 항목별 평균 */
   function renderSummary(subs) {
     const card = document.getElementById('summaryCard');
-    if (!subs.length) { card.style.display = 'none'; return; }
+    if (!subs.length) { card.style.display='none'; return; }
     card.style.display = 'block';
-
-    const grid = document.getElementById('summaryGrid');
+    const icons = ['⭐','🦶','🔩','🎨'];
     let html = '';
-
-    // 제품별 평균
     PRODUCTS.forEach((prod, pi) => {
-      let total = 0, cnt = 0;
-      subs.forEach(s => s.scores[pi].forEach(v => { total += v; cnt++; }));
-      const avg = cnt ? (total/cnt).toFixed(2) : '-';
-      html += `<div class="summary-item"><div class="si-label">${prod}</div><div class="si-val">${avg}</div></div>`;
+      let total=0, cnt=0;
+      subs.forEach(s => s.scores[pi].forEach(v => { total+=v; cnt++; }));
+      html += `<div class="summary-item"><div class="si-label">${prod}</div><div class="si-val">${cnt?(total/cnt).toFixed(2):'-'}</div></div>`;
     });
-
-    // 기준별 평균
     CRITERIA.forEach((crit, ci) => {
-      let total = 0, cnt = 0;
-      subs.forEach(s => { total += s.scores.reduce((a,row)=>a+row[ci],0); cnt += 6; });
-      const avg = cnt ? (total/cnt).toFixed(2) : '-';
-      const icons = ['⭐','🦶','🔩','🎨'];
-      html += `<div class="summary-item"><div class="si-label">${icons[ci]} ${crit} 평균</div><div class="si-val">${avg}</div></div>`;
+      let total=0;
+      subs.forEach(s => s.scores.forEach(row => total+=row[ci]));
+      const cnt = subs.length*6;
+      html += `<div class="summary-item"><div class="si-label">${icons[ci]} ${crit} 평균</div><div class="si-val">${cnt?(total/cnt).toFixed(2):'-'}</div></div>`;
     });
-
-    grid.innerHTML = html;
+    document.getElementById('summaryGrid').innerHTML = html;
   }
 
-  /* 데이터 테이블 */
   function renderTable(subs) {
     const wrap = document.getElementById('tableWrap');
     document.getElementById('countBadge').textContent = `총 ${subs.length}건`;
-
     if (!subs.length) {
-      wrap.innerHTML = `
-        <div class="empty-state">
-          <div class="empty-icon">📭</div>
-          <p>아직 제출된 평가가 없습니다.</p>
-        </div>`;
+      wrap.innerHTML = `<div class="empty-state"><div class="empty-icon">📭</div><p>아직 제출된 평가가 없습니다.</p></div>`;
       return;
     }
-
-    // 헤더 생성
-    // 1행: 기본정보 + 제품별(colspan4) + 총합
-    // 2행: 성명/소속/제출일 + 품질/착용/내구/디자 반복 + -
-    let th1 = `<th rowspan="2" style="text-align:left; padding-left:14px;">성명</th>
-               <th rowspan="2" style="text-align:left; padding-left:14px;">소속팀</th>
+    let th1 = `<th rowspan="2" style="text-align:left;padding-left:14px;">성명</th>
+               <th rowspan="2" style="text-align:left;padding-left:14px;">소속팀</th>
                <th rowspan="2">제출일시</th>`;
     let th2 = '';
-
     PRODUCTS.forEach(prod => {
       th1 += `<th colspan="4">${prod}</th>`;
       CRITERIA.forEach(c => { th2 += `<th>${c}</th>`; });
     });
-
     th1 += `<th rowspan="2">총합</th><th rowspan="2"></th>`;
 
-    const thead = `<thead><tr>${th1}</tr><tr>${th2}</tr></thead>`;
-
-    // 데이터 행
     let rows = '';
     subs.forEach((s, idx) => {
-      const flatScores = s.scores.flat();
-      const total = flatScores.reduce((a,b)=>a+b,0);
-      const cells = flatScores.map(v => `<td class="s${v}">${v}</td>`).join('');
+      const flat  = s.scores.flat();
+      const total = flat.reduce((a,b)=>a+b,0);
+      const cells = flat.map(v=>`<td class="s${v}">${v}</td>`).join('');
       rows += `
         <tr>
-          <td class="td-name">${escHtml(s.name)}</td>
-          <td class="td-team">${escHtml(s.team)}</td>
-          <td class="td-date">${escHtml(s.submittedAt)}</td>
+          <td class="td-name">${esc(s.name)}</td>
+          <td class="td-team">${esc(s.team)}</td>
+          <td class="td-date">${esc(s.submittedAt)}</td>
           ${cells}
           <td class="td-total">${total}</td>
-          <td class="td-del"><button class="btn-del" onclick="deleteRow(${idx})" title="삭제">✕</button></td>
+          <td><button class="btn-del" onclick="deleteRow(${idx})" title="삭제">✕</button></td>
         </tr>`;
     });
 
     // 평균 행
     let avgCells = '';
-    PRODUCTS.forEach((_, pi) => {
-      CRITERIA.forEach((_, ci) => {
-        const avg = subs.reduce((a,s)=>a+s.scores[pi][ci],0)/subs.length;
-        avgCells += `<td style="font-size:0.8rem; color:#5a7a9a;">${avg.toFixed(1)}</td>`;
-      });
-    });
+    PRODUCTS.forEach((_,pi) => CRITERIA.forEach((_,ci) => {
+      const avg = subs.reduce((a,s)=>a+s.scores[pi][ci],0)/subs.length;
+      avgCells += `<td style="font-size:0.79rem;color:#5a7a9a;">${avg.toFixed(1)}</td>`;
+    }));
     const grandAvg = subs.reduce((a,s)=>a+s.scores.flat().reduce((x,y)=>x+y,0),0)/subs.length;
     rows += `
-      <tr style="background:#f4f8ff; font-style:italic;">
-        <td class="td-name" style="font-style:italic; color:#5a7a9a;">평균</td>
+      <tr style="background:#f4f8ff;font-style:italic;">
+        <td class="td-name" style="color:#5a7a9a;">평균</td>
         <td></td><td></td>
         ${avgCells}
         <td class="td-total" style="color:#5a7a9a;">${grandAvg.toFixed(1)}</td>
         <td></td>
       </tr>`;
 
-    wrap.innerHTML = `<table>${thead}<tbody>${rows}</tbody></table>`;
+    wrap.innerHTML = `<table><thead><tr>${th1}</tr><tr>${th2}</tr></thead><tbody>${rows}</tbody></table>`;
   }
 
-  /* ══════════════
-     삭제
-  ══════════════ */
-  function deleteRow(idx) {
-    const subs = getSubmissions();
-    const sub = subs[idx];
-    if (!confirm(`다음 평가를 삭제하시겠습니까?\n\n성명: ${sub.name}\n소속팀: ${sub.team}\n제출일시: ${sub.submittedAt}`)) return;
-    subs.splice(idx, 1);
-    localStorage.setItem(STORE_KEY, JSON.stringify(subs));
-    renderDash();
+  /* ── 개별 삭제 ── */
+  async function deleteRow(idx) {
+    const sub = cachedSubs[idx];
+    if (!confirm(`다음 평가를 삭제하시겠습니까?\n\n성명: ${sub.name}\n소속팀: ${sub.team}`)) return;
+    showLoading('삭제 중...');
+    try {
+      const subs = await apiGet();
+      subs.splice(idx, 1);
+      await apiPut(subs);
+      cachedSubs = subs;
+      renderDash(subs);
+      showToast('🗑️ 삭제되었습니다.');
+    } catch(e) { alert(`오류: ${e.message}`); }
+    finally { hideLoading(); }
   }
 
-  function clearAll() {
-    const subs = getSubmissions();
-    if (!subs.length) { alert('삭제할 데이터가 없습니다.'); return; }
-    const pwd = prompt(`전체 ${subs.length}건을 삭제합니다.\n확인을 위해 관리자 비밀번호를 입력하세요.`);
+  /* ── 전체 삭제 ── */
+  async function clearAll() {
+    if (!cachedSubs.length) { alert('삭제할 데이터가 없습니다.'); return; }
+    const pwd = prompt(`전체 ${cachedSubs.length}건을 삭제합니다.\n관리자 비밀번호를 입력하세요.`);
     if (pwd === null) return;
     if (pwd !== ADMIN_PWD) { alert('비밀번호가 올바르지 않습니다.'); return; }
-    if (!confirm(`정말로 모든 평가 데이터(${subs.length}건)를 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.`)) return;
-    localStorage.removeItem(STORE_KEY);
-    localStorage.removeItem('safety_eval_lock');
-    renderDash();
+    if (!confirm(`정말로 모든 평가 데이터(${cachedSubs.length}건)를 삭제할까요?\n이 작업은 되돌릴 수 없습니다.`)) return;
+    showLoading('전체 삭제 중...');
+    try {
+      await apiPut([]);
+      cachedSubs = [];
+      renderDash([]);
+      showToast('🗑️ 전체 삭제되었습니다.');
+    } catch(e) { alert(`오류: ${e.message}`); }
+    finally { hideLoading(); }
   }
 
-  /* ══════════════
-     CSV 다운로드 (엑셀 호환)
-  ══════════════ */
+  /* ── CSV 다운로드 ── */
   function downloadCSV() {
-    const subs = getSubmissions();
-    if (!subs.length) { alert('다운로드할 데이터가 없습니다.'); return; }
+    if (!cachedSubs.length) { alert('다운로드할 데이터가 없습니다.'); return; }
+    const header = ['성명','소속팀','제출일시'];
+    PRODUCTS.forEach(p => CRITERIA.forEach(c => header.push(`${p}_${c}`)));
+    header.push('총합');
 
-    // 헤더 행 1
-    const header1 = ['성명','소속팀','제출일시'];
-    PRODUCTS.forEach(p => CRITERIA.forEach(c => header1.push(`${p}_${c}`)));
-    header1.push('총합');
-
-    // 데이터 행
-    const rows = subs.map(s => {
+    const rows = cachedSubs.map(s => {
       const row = [s.name, s.team, s.submittedAt];
       s.scores.forEach(r => r.forEach(v => row.push(v)));
       row.push(s.scores.flat().reduce((a,b)=>a+b,0));
       return row;
     });
 
-    // 평균 행
-    const avgRow = ['평균', '', ''];
-    PRODUCTS.forEach((_, pi) => {
-      CRITERIA.forEach((_, ci) => {
-        avgRow.push((subs.reduce((a,s)=>a+s.scores[pi][ci],0)/subs.length).toFixed(2));
-      });
-    });
-    avgRow.push((subs.reduce((a,s)=>a+s.scores.flat().reduce((x,y)=>x+y,0),0)/subs.length).toFixed(2));
+    const avgRow = ['평균','',''];
+    PRODUCTS.forEach((_,pi) => CRITERIA.forEach((_,ci) => {
+      avgRow.push((cachedSubs.reduce((a,s)=>a+s.scores[pi][ci],0)/cachedSubs.length).toFixed(2));
+    }));
+    avgRow.push((cachedSubs.reduce((a,s)=>a+s.scores.flat().reduce((x,y)=>x+y,0),0)/cachedSubs.length).toFixed(2));
 
-    const allRows = [header1, ...rows, avgRow];
-    const csvContent = allRows.map(r => r.map(cell => `"${String(cell).replace(/"/g,'""')}"`).join(',')).join('\n');
+    const csv = [header,...rows,avgRow]
+      .map(r => r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(','))
+      .join('\n');
 
-    // UTF-8 BOM 추가 (한글 깨짐 방지)
-    const bom = '﻿';
-    const blob = new Blob([bom + csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url  = URL.createObjectURL(blob);
     const now  = new Date();
     const ts   = `${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}_${pad(now.getHours())}${pad(now.getMinutes())}`;
-    const a    = document.createElement('a');
-    a.href     = url;
-    a.download = `안전화평가집계_${ts}.csv`;
+    const blob = new Blob(['﻿'+csv], {type:'text/csv;charset=utf-8;'});
+    const a    = Object.assign(document.createElement('a'), {
+      href: URL.createObjectURL(blob),
+      download: `안전화평가집계_${ts}.csv`
+    });
     a.click();
-    URL.revokeObjectURL(url);
+    URL.revokeObjectURL(a.href);
+    showToast('📥 엑셀 파일 다운로드 완료');
   }
 
   function pad(n) { return String(n).padStart(2,'0'); }
-  function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 </script>
 </body>
 </html>
