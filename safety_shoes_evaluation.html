@@ -250,14 +250,13 @@
 
 <script>
   /* ════════════════════════════════
-     ⚙️  여기에 JSONBin 정보를 입력하세요
+     ⚙️  Firebase URL을 입력하세요
+         예) https://my-project-default-rtdb.firebaseio.com
   ════════════════════════════════ */
-  const JSONBIN_ID  = '6a167fadf47d5c455c3bbfbd';      // JSONBin Bin ID
-  const JSONBIN_KEY = '$2a$10$ChZLbbECmdzPwOqVrVIbvOXomxW41ZdkL4G/2NCqvHzrSUx11qmn6';  // JSONBin Master Key
-  const API_BASE    = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
+  const FIREBASE_URL = 'https://shoes-evaluation-default-rtdb.firebaseio.com';
   /* ════════════════════════════════ */
 
-  const PRODUCTS = ['1번 제품','2번 제품','3번 제품','4번 제품','5번 제품','6번 제품'];
+  const PRODUCTS = ['네파','코오롱글로벌','지벤','K2','마운티아','테이크스타'];
   const CRITERIA = [
     { label:'품질',   icon:'⭐' },
     { label:'착용감', icon:'🦶' },
@@ -279,24 +278,23 @@
     document.getElementById('loadingOverlay').classList.remove('show');
   }
 
-  /* ── JSONBin API ── */
+  /* ── Firebase REST API ── */
   async function apiGet() {
-    const res = await fetch(`${API_BASE}/latest`, {
-      headers: { 'X-Master-Key': JSONBIN_KEY }
-    });
+    const res = await fetch(`${FIREBASE_URL}/submissions.json`);
     if (!res.ok) throw new Error('데이터를 불러오지 못했습니다.');
-    const json = await res.json();
-    return json.record?.submissions || [];
+    const data = await res.json();
+    return data ? Object.values(data) : [];
   }
 
-  async function apiPut(data) {
-    const res = await fetch(API_BASE, {
+  async function apiPut(arr) {
+    // 배열을 {0:{...}, 1:{...}} 객체로 변환하여 저장
+    const obj = {};
+    arr.forEach((item, i) => { obj[i] = item; });
+    const body = arr.length ? JSON.stringify(obj) : 'null';
+    const res  = await fetch(`${FIREBASE_URL}/submissions.json`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Master-Key': JSONBIN_KEY
-      },
-      body: JSON.stringify({ submissions: data })
+      headers: { 'Content-Type': 'application/json' },
+      body
     });
     if (!res.ok) throw new Error('데이터 저장에 실패했습니다.');
   }
